@@ -22,6 +22,8 @@ export function AuthProvider({ children }) {
     await signOut(auth);
   };
 
+  
+
   return (
     <AuthContext.Provider value={{ user, loading, auth, logout }}>
       {children}
