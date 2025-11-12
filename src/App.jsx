@@ -1,41 +1,43 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-
-import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
-import HomePage from "./pages/HomePage";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
 import AvailableFoods from "./pages/AvailableFoods";
-import FoodDetails from "./pages/FoodDetails";
 import AddFood from "./pages/AddFood";
-import ManageFoods from "./pages/ManageFoods";
+import ManageMyFoods from "./pages/ManageMyFoods";
+import UpdateFood from "./pages/UpdateFood";
+import FoodDetails from "./pages/FoodDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
-import Footer from "./components/Footer";
+import MyRequests from "./pages/MyRequests";
 
-export default function App(){
+
+export default function App() {
   return (
-    <AuthProvider>
+    <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
         <Route path="/foods" element={<AvailableFoods />} />
-        <Route path="/food/:id" element={
-          <PrivateRoute><FoodDetails/></PrivateRoute>
-        } />
-        <Route path="/add-food" element={
-          <PrivateRoute><AddFood/></PrivateRoute>
-        } />
-        <Route path="/manage-foods" element={
-          <PrivateRoute><ManageFoods/></PrivateRoute>
-        } />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/my-requests" element={<PrivateRoute><MyRequests /></PrivateRoute>} />
+
+
+        <Route path="/food/:id" element={<PrivateRoute><FoodDetails /></PrivateRoute>} />
+        <Route path="/add-food" element={<PrivateRoute><AddFood /></PrivateRoute>} />
+        <Route path="/manage-foods" element={<PrivateRoute><ManageMyFoods /></PrivateRoute>} />
+        <Route path="/update-food/:id" element={<PrivateRoute><UpdateFood /></PrivateRoute>} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
-       <Footer /> 
+
+      <Footer />
       <ToastContainer />
-    </AuthProvider>
+    </>
   );
 }
