@@ -16,12 +16,12 @@ export default function MyRequests() {
     const load = async () => {
       const token = await user.getIdToken();
 
-      // Step 1: Fetch All Foods
+    
       const foodsRes = await fetch(`${API}/foods`);
       const allFoods = await foodsRes.json();
       const myFoods = allFoods.filter((f) => f.donator?.email === user.email);
 
-      // Step 2: Fetch Requests for Each Food
+     
       let allReqs = [];
       for (const f of myFoods) {
         const res = await fetch(`${API}/requests/${f._id}`, {
@@ -48,9 +48,7 @@ export default function MyRequests() {
     load();
   }, [user]);
 
-  // ===========================
-  // ✔ Accept & Reject Handler
-  // ===========================
+
   const handleAction = async (requestId, status, foodId) => {
     const token = await user.getIdToken();
 
@@ -80,7 +78,7 @@ export default function MyRequests() {
       return;
     }
 
-    // Step 2 — If accepted, also mark food as donated
+   
     if (status === "accepted") {
       const foodRes = await fetch(`${API}/foods/${foodId}`, {
         method: "PATCH",
@@ -99,7 +97,7 @@ export default function MyRequests() {
 
     toast.success(`Request ${status}`);
 
-    // Update UI instantly
+
     setRequests((prev) =>
       prev.map((r) => (r._id === requestId ? { ...r, status } : r))
     );

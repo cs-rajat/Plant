@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
+
+
 export function useFeaturedFoods() {
   return useQuery({
     queryKey: ["featuredFoods"],
