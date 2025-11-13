@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 export default function FoodDetails() {
   const { id } = useParams();
   const { user } = useAuth();
+  const API = import.meta.env.VITE_API_BASE;
   const [food, setFood] = useState(null);
 
   const [asking, setAsking] = useState({
@@ -17,14 +18,14 @@ export default function FoodDetails() {
   useEffect(() => {
     const fetchData = async () => {
       const token = user && (await user.getIdToken());
-      const res = await fetch(`${import.meta.env.VITE_API_BASE}/foods/${id}`, {
+      const res = await fetch(`${API}/foods/${id}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       const data = await res.json();
       setFood(data);
     };
     fetchData();
-  }, [id, user]);
+  }, [id, user, API]);
 
   const submitRequest = async () => {
     if (!user) {
@@ -38,7 +39,7 @@ export default function FoodDetails() {
     }
 
     const token = await user.getIdToken();
-    const res = await fetch(`${import.meta.env.VITE_API_BASE}/requests`, {
+    const res = await fetch(`${API}/requests`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,8 +86,8 @@ export default function FoodDetails() {
           </p>
 
           <p className="text-gray-700">
-            <span className="font-semibold">Donator:</span>{" "}
-            {food.donator?.name} ({food.donator?.email})
+            <span className="font-semibold">Donator:</span> {food.donator?.name}{" "}
+            ({food.donator?.email})
           </p>
 
           <p className="text-gray-700">
