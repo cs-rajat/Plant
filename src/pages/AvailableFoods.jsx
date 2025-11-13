@@ -8,34 +8,81 @@ export default function AvailableFoods() {
   const API = import.meta.env.VITE_API_BASE;
   const nav = useNavigate();
 
-  useEffect(()=> {
-    (async ()=>{
+  useEffect(() => {
+    (async () => {
       try {
         const res = await fetch(`${API}/foods`);
         const data = await res.json();
         setFoods(data);
-      } catch(e){ console.error(e); }
+      } catch (e) {
+        console.error(e);
+      }
       setLoading(false);
     })();
-  },[]);
+  }, []);
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader text="Loading available foods..." size="lg" />;
+
   return (
-    <div style={{padding:20}}>
-      <h2>Available Foods</h2>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:16}}>
-        {foods?.map(f=>(
-          <div key={f._id} style={{border:"1px solid #ddd",padding:12}}>
-            <img src={f.imageUrl} alt={f.name} style={{width:"100%",height:150,objectFit:"cover"}} />
-            <h3>{f.name}</h3>
-            <p>{f.quantity}</p>
-            <p>Pickup: {f.pickupLocation}</p>
-            <p>Expires: {new Date(f.expireDate).toLocaleDateString()}</p>
-            <p>Donor: {f.donator?.name}</p>
-            <button onClick={()=> nav(`/food/${f._id}`)}>View Details</button>
-          </div>
-        ))}
-      </div>
+    <div className="min-h-screen px-6 py-10 md:px-12 lg:px-20 bg-green-50">
+      <h2 className="mb-10 text-3xl font-bold text-center text-green-700">
+        Available Foods 🍱
+      </h2>
+
+      {foods?.length === 0 ? (
+        <div className="text-lg text-center text-gray-600">
+          No foods available at the moment 😔
+        </div>
+      ) : (
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {foods?.map((f) => (
+            <div
+              key={f._id}
+              className="overflow-hidden transition-transform transform bg-white border border-gray-200 shadow-md rounded-xl hover:shadow-lg hover:-translate-y-1"
+            >
+              <img
+                src={f.imageUrl}
+                alt={f.name}
+                className="object-cover w-full h-48"
+              />
+              <div className="p-4 space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {f.name}
+                </h3>
+                <p className="text-sm text-gray-600">{f.quantity}</p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium text-gray-700">Pickup:</span>{" "}
+                  {f.pickupLocation}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium text-gray-700">Expires:</span>{" "}
+                  {new Date(f.expireDate).toLocaleDateString()}
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  {f.donator?.photoURL ? (
+                    <img
+                      src={f.donator.photoURL}
+                      alt="donor"
+                      className="w-8 h-8 border rounded-full"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-gray-300 rounded-full" />
+                  )}
+                  <p className="text-sm text-gray-700">
+                    {f.donator?.name || "Anonymous"}
+                  </p>
+                </div>
+                <button
+                  onClick={() => nav(`/food/${f._id}`)}
+                  className="w-full py-2 mt-3 text-white transition bg-green-600 rounded-lg hover:bg-green-700"
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
