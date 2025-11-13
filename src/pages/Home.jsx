@@ -26,6 +26,7 @@ export default function Home() {
 
   return (
     <div className="text-gray-800 bg-gray-50">
+      {/* HERO SECTION */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <img
           src={hero}
@@ -58,6 +59,7 @@ export default function Home() {
         </motion.div>
       </section>
 
+     
       <motion.section
         variants={fadeInUp}
         initial="hidden"
@@ -83,6 +85,7 @@ export default function Home() {
         </div>
       </motion.section>
 
+    
       <motion.section
         variants={fadeInUp}
         initial="hidden"
@@ -90,7 +93,7 @@ export default function Home() {
         viewport={{ once: true }}
         className="px-6 py-16 md:px-12 lg:px-20"
       >
-        <h2 className="mb-8 text-3xl font-semibold text-center text-gray-800">
+        <h2 className="mb-10 text-3xl font-semibold text-center text-gray-800">
           Featured Foods
         </h2>
 
@@ -99,29 +102,41 @@ export default function Home() {
             <Loader />
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {data?.map((f, i) => (
+          <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+            {data?.slice(0, 6).map((f, i) => (
               <motion.div
                 key={f._id}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.05 }}
                 viewport={{ once: true }}
-                className="overflow-hidden transition-all bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md"
+                className="overflow-hidden transition-all bg-white border border-gray-200 shadow-lg rounded-2xl hover:shadow-xl"
               >
-                <img
-                  src={f.imageUrl}
-                  alt={f.name}
-                  className="object-cover w-full h-44"
-                />
-                <div className="p-4 space-y-2">
-                  <h3 className="text-lg font-semibold">{f.name}</h3>
-                  <p className="text-sm text-gray-600">{f.quantity}</p>
+                <div className="relative">
+                  <img
+                    src={f.imageUrl}
+                    alt={f.name}
+                    className="object-cover w-full h-48 rounded-t-2xl"
+                  />
+                  <span className="absolute px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-full shadow-md right-3 top-3">
+                    {f.quantity}
+                  </span>
+                </div>
+
+                <div className="p-5 space-y-3">
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {f.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {f.description ||
+                      "Delicious food shared by our community."}
+                  </p>
+
                   <Link to={`/food/${f._id}`}>
                     <motion.button
                       whileTap={{ scale: 0.95 }}
-                      className="w-full py-2 mt-2 text-white transition bg-green-500 rounded-md hover:bg-green-600"
+                      className="w-full py-2 mt-2 font-medium text-white transition bg-green-600 rounded-lg hover:bg-green-700"
                     >
                       View Details
                     </motion.button>
@@ -145,6 +160,7 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* HOW IT WORKS */}
       <motion.section
         variants={fadeInUp}
         initial="hidden"
@@ -171,6 +187,7 @@ export default function Home() {
         </ol>
       </motion.section>
 
+      {/* MISSION */}
       <motion.section
         variants={fadeInUp}
         initial="hidden"
